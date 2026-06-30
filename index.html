@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEVEN TEN</title>
+<style>
+body{margin:0;font-family:Arial;background:#070b13;color:white}
+header{padding:25px;text-align:center;background:#0d1424}
+.logo{font-size:38px;letter-spacing:5px;color:#f6c343;font-weight:bold}
+p{color:#b8c2d6;line-height:1.6}
+main{padding:18px;max-width:900px;margin:auto}
+.card{background:#111b2d;border:1px solid #26364f;border-radius:22px;padding:22px;margin:16px 0}
+button{width:100%;margin:8px 0;border:0;border-radius:16px;padding:16px;font-size:18px;font-weight:bold}
+.gold{background:#f6c343;color:#111827}
+.dark{background:#172238;color:white;border:1px solid #31425f}
+input,textarea,select{width:100%;padding:14px;margin:8px 0;border-radius:14px;border:1px solid #31425f;background:#070d18;color:white;font-size:16px}
+.hidden{display:none}
+.badge{display:inline-block;color:#f6c343;border:1px solid #f6c343;border-radius:20px;padding:7px 12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">SEVEN TEN</div>
+  <p>Connect. Book. Perform.</p>
+</header>
+
+<main>
+
+<section class="card" id="home">
+  <h2>ברוכים הבאים ל־Seven Ten</h2>
+  <p>פלטפורמה אחת לעולם הדיג׳יים, האירועים, המועדונים, המפיקים והספקים.</p>
+  <button class="gold" onclick="show('account')">צור חשבון</button>
+  <button class="dark">התחבר</button>
+  <button class="dark">המשך כאורח</button>
+</section>
+
+<section class="card hidden" id="account">
+  <span class="badge">צור חשבון</span>
+  <h2>בחר סוג משתמש</h2>
+  <button class="gold" onclick="show('private')">אני לקוח פרטי</button>
+  <button class="dark" onclick="show('business')">אני בעל עסק / ספק שירות</button>
+  <button class="dark" onclick="show('home')">חזרה</button>
+</section>
+
+<section class="card hidden" id="business">
+  <span class="badge">בעל עסק / ספק</span>
+  <h2>בחר תחום</h2>
+  <button class="gold" onclick="setRole('DJ')">אני DJ</button>
+  <button class="dark" onclick="setRole('בעל מועדון')">אני בעל מועדון</button>
+  <button class="dark" onclick="setRole('מפיק אירועים')">אני מפיק אירועים</button>
+  <button class="dark" onclick="setRole('צלם')">אני צלם</button>
+  <button class="dark" onclick="setRole('דיילת / מארחת / ברמן / מלצר')">צוות אירועים</button>
+  <button class="dark" onclick="setRole('ספק נוסף')">ספק נוסף</button>
+</section>
+
+<section class="card hidden" id="private">
+  <span class="badge">לקוח פרטי</span>
+  <h2>מה אתה מחפש?</h2>
+  <form onsubmit="save(event,'לקוח פרטי')">
+    <input placeholder="שם מלא" required>
+    <input placeholder="טלפון">
+    <select>
+      <option>חתונה</option>
+      <option>יום הולדת</option>
+      <option>אירוע חברה</option>
+      <option>אירוע פרטי אחר</option>
+    </select>
+    <input placeholder="תאריך האירוע">
+    <input placeholder="עיר / אזור">
+    <textarea placeholder="מה אתה מחפש? DJ, צלם, מפיק, צוות אירוע..."></textarea>
+    <button class="gold">שמור פנייה</button>
+  </form>
+</section>
+
+<section class="card hidden" id="provider">
+  <span class="badge" id="roleName"></span>
+  <h2>פתיחת פרופיל</h2>
+  <form onsubmit="save(event,currentRole)">
+    <input placeholder="שם מלא / שם העסק" required>
+    <input placeholder="טלפון">
+    <input placeholder="עיר / אזור פעילות">
+    <input placeholder="תחום / סגנון / קטגוריה">
+    <input placeholder="מחיר / טווח מחירים">
+    <textarea placeholder="ספר על עצמך, ניסיון, שירותים וזמינות"></textarea>
+    <button class="gold">שמור פרופיל</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>הסיפור של Seven Ten</h2>
+  <p>
+    Seven Ten נולדה מתוך עולם הלילה, המוזיקה והאירועים.
+    המטרה היא לחבר בין אנשים, עסקים וספקים במקום אחד מסודר,
+    מקצועי ונגיש.
+  </p>
+</section>
+
+<section class="card">
+  <h2>למה להצטרף אלינו?</h2>
+  <p>
+    חשיפה ללקוחות, ניהול פניות, בניית מוניטין, השוואת מחירים,
+    הזמנות, ובשלב הבא גם יומן, צ׳אט, חוזים ותשלומים.
+  </p>
+</section>
+
+<section class="card">
+  <h2>פרופילים ופניות שנשמרו</h2>
+  <div id="list"><p>עדיין אין נתונים.</p></div>
+</section>
+
+</main>
+
+<script>
+let currentRole='';
+
+function show(id){
+  ['home','account','business','private','provider'].forEach(x=>document.getElementById(x).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function setRole(role){
+  currentRole=role;
+  document.getElementById('roleName').innerText=role;
+  show('provider');
+}
+
+function save(e,role){
+  e.preventDefault();
+  let data=JSON.parse(localStorage.getItem('seventen')||'[]');
+  let values=[...e.target.querySelectorAll('input,textarea,select')].map(x=>x.value);
+  data.unshift({role,values});
+  localStorage.setItem('seventen',JSON.stringify(data));
+  e.target.reset();
+  render();
+  alert('נשמר בהצלחה בגרסת ההדגמה');
+}
+
+function render(){
+  let data=JSON.parse(localStorage.getItem('seventen')||'[]');
+  document.getElementById('list').innerHTML=data.length?data.map(x=>`
+    <div class="card">
+      <span class="badge">${x.role}</span>
+      <h3>${x.values[0]||''}</h3>
+      <p>${x.values.join(' | ')}</p>
+    </div>
+  `).join(''):'<p>עדיין אין נתונים.</p>';
+}
+render();
+</script>
+
+</body>
+</html>
